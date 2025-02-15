@@ -12,3 +12,13 @@ pickleball:
 
 volleyball:
   just sport volleyball
+
+alias d:=deploy
+deploy:
+  python deploy.py
+update_req:
+  pip install -r requirements.in
+  pip-compile  requirements.in -o requirements.txt
+
+
+

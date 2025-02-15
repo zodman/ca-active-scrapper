@@ -1,0 +1,9 @@
+jq
+marshmallow
+pydash
+requests
+rich
+timeago
+python-dateutil
+fabric
+patchwork
