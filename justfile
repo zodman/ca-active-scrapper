@@ -21,4 +21,6 @@ update_req:
   pip-compile  requirements.in -o requirements.txt
 
 
-
+t:
+  rm .*.db
+  just pickleball

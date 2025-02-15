@@ -46,7 +46,8 @@ def send_telegram_message(message):
         return
     url = f"https://api.telegram.org/bot{token}/sendMessage"
     params = {"chat_id": chat_id, "text": message}
-    response = requests.get(url, params=params)
+    response = requests.post(url, params=params)
+    print(f"message sent {response.text}")
     response.raise_for_status()
 
 
@@ -64,8 +65,9 @@ for i in filtered:
         with dbm.open(os.path.join(BASE_DIR, ".mydb"), "c") as db:
             id = f"{i.id}"
             if id not in db:
+                print(f"sending message to telegram {id}")
                 db[id] = "send"
-                send_mesage = True
+                sent_message = True
     msg = f""" [bold]{i.name}[/bold],  {i.openings} avail,  open: {f}  ages: {i.ages}
             {i.days_of_week}, {timeago.format(parse(i.date_range.split("to")[0]), now) if "to"  in i.date_range else timeago.format(parse(i.date_range), now)}, {i.date_range }, {i.time_range}
             {i.location["label"]}
@@ -74,4 +76,12 @@ for i in filtered:
     """
     console.print(msg)
     if sent_message:
-        send_telegram_message(msg)
+        send_telegram_message(
+            f"""
+{i.name},  {i.openings} avail, ages: {i.ages}
+            {i.days_of_week}, {timeago.format(parse(i.date_range.split("to")[0]), now) if "to"  in i.date_range else timeago.format(parse(i.date_range), now)}, {i.date_range }, {i.time_range}
+            {i.location["label"]}
+          {i.detail_url}
+
+                """
+        )
