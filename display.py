@@ -1,15 +1,20 @@
 import json
+import requests
 from marshmallow import Schema
 import timeago
 from dateutil.parser import parse
 import datetime
+import dbm
+import os
 
 from rich.console import Console
 
 console = Console()
 
+BASE_DIR = os.path.dirname(os.path.realpath(__file__))
 
-with open("output.json") as f:
+
+with open(os.path.join(BASE_DIR, "output.json")) as f:
     results = json.loads(f.read())
 
 filtered = []
@@ -32,7 +37,21 @@ filtered = sorted(
     reverse=True,
 )
 
+
+def send_telegram_message(message):
+    token = os.getenv("TELEGRAM_TOKEN")
+    chat_id = os.getenv("TELEGRAM_CHAT_ID")
+    if not token or not chat_id:
+        print("no message to telegram")
+        return
+    url = f"https://api.telegram.org/bot{token}/sendMessage"
+    params = {"chat_id": chat_id, "text": message}
+    response = requests.get(url, params=params)
+    response.raise_for_status()
+
+
 for i in filtered:
+    sent_message = False
     if i.activity_online_start_time:
         d = parse(i.activity_online_start_time)
         two_weeks_later = now + datetime.timedelta(days=14)
@@ -42,9 +61,16 @@ for i in filtered:
     else:
         f = ":up: [green][b]NOW[/b][/green]"
 
-    console.print(f""" [bold]{i.name}[/bold],  {i.openings} avail,  open: {f}  ages: {i.ages}
+        with dbm.open(os.path.join(BASE_DIR, ".mydb.dbm"), "c") as db:
+            if i.id not in db:
+                db[i.id] = i
+                send_mesage = True
+    msg = f""" [bold]{i.name}[/bold],  {i.openings} avail,  open: {f}  ages: {i.ages}
             {i.days_of_week}, {timeago.format(parse(i.date_range.split("to")[0]), now) if "to"  in i.date_range else timeago.format(parse(i.date_range), now)}, {i.date_range }, {i.time_range}
             {i.location["label"]}
           {i.detail_url}
         
-    """)
+    """
+    console.print(msg)
+    if sent_message:
+        send_telegram_message(msg)

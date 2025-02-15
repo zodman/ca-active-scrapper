@@ -3,6 +3,9 @@ import json
 import jq
 import pydash as py_
 import sys
+import os
+
+BASE_DIR = os.path.dirname(os.path.realpath(__file__))
 
 
 s = requests.Session()
@@ -89,5 +92,5 @@ for location in [kitchener, waterloo]:
                 # )
                 # results.append(i)
 
-with open("output.json", "w") as f:
+with open(os.path.join(BASE_DIR, "output.json"), "w") as f:
     json.dump(results, f)
