@@ -61,9 +61,10 @@ for i in filtered:
     else:
         f = ":up: [green][b]NOW[/b][/green]"
 
-        with dbm.open(os.path.join(BASE_DIR, ".mydb.dbm"), "c") as db:
-            if i.id not in db:
-                db[i.id] = i
+        with dbm.open(os.path.join(BASE_DIR, ".mydb"), "c") as db:
+            id = f"{i.id}"
+            if id not in db:
+                db[id] = "send"
                 send_mesage = True
     msg = f""" [bold]{i.name}[/bold],  {i.openings} avail,  open: {f}  ages: {i.ages}
             {i.days_of_week}, {timeago.format(parse(i.date_range.split("to")[0]), now) if "to"  in i.date_range else timeago.format(parse(i.date_range), now)}, {i.date_range }, {i.time_range}

@@ -16,15 +16,13 @@ charset-normalizer==3.3.2
     # via requests
 cryptography==44.0.1
     # via paramiko
-decorator==5.1.1
-    # via fabric
-deprecated==1.2.18
-    # via fabric
-fabric==3.2.2
-    # via -r requirements.in
+fabric==2.7.1
+    # via
+    #   -r requirements.in
+    #   patchwork
 idna==3.7
     # via requests
-invoke==2.2.0
+invoke==1.7.3
     # via fabric
 jq==1.7.0
     # via -r requirements.in
@@ -37,6 +35,10 @@ mdurl==0.1.2
 packaging==24.2
     # via marshmallow
 paramiko==3.5.1
+    # via fabric
+patchwork==1.0.1
+    # via -r requirements.in
+pathlib2==2.3.7.post1
     # via fabric
 pycparser==2.22
     # via cffi
@@ -53,7 +55,9 @@ requests==2.32.3
 rich==13.9.4
     # via -r requirements.in
 six==1.17.0
-    # via python-dateutil
+    # via
+    #   pathlib2
+    #   python-dateutil
 timeago==1.0.16
     # via -r requirements.in
 typing-extensions==4.12.2
@@ -62,5 +66,3 @@ typing-extensions==4.12.2
     #   rich
 urllib3==2.2.2
     # via requests
-wrapt==1.17.2
-    # via deprecated

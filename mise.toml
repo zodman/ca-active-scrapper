@@ -1,6 +1,8 @@
 [tools]
 python = "3.10"
+usage = "latest"
 
 [env]
+FABRIC_RUN_ECHO = "true"
 _.file = ".env.json"
-_.python.venv = ".venv" # relative to this file's directory
+_.python.venv = { path = ".venv", create = true }

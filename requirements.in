@@ -6,4 +6,4 @@ rich
 timeago
 python-dateutil
 fabric
-patchwork
+patchwork==1.0.1
