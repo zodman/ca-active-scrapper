@@ -4,6 +4,10 @@ import timeago
 from dateutil.parser import parse
 import datetime
 
+from rich.console import Console
+
+console = Console()
+
 
 with open("output.json") as f:
     results = json.loads(f.read())
@@ -17,12 +21,9 @@ now = datetime.datetime.now()
 
 
 def filter_by_date(x):
-    if x.activity_online_start_time:
-        return parse(x.activity_online_start_time)
-    else:
-        if "to" in x.date_range:
-            return parse(x.date_range.split("to")[0])
-        return parse(x.date_range)
+    if "to" in x.date_range:
+        return parse(x.date_range.split("to")[0])
+    return parse(x.date_range)
 
 
 filtered = sorted(
@@ -39,10 +40,10 @@ for i in filtered:
             continue
         f = timeago.format(d, now)
     else:
-        f = "now"
+        f = ":up: [green][b]NOW[/b][/green]"
 
-    print(f"""{i.name},  {i.openings} avail,  open: {f}  ages: {i.ages}
-            {parse(i.date_range).strftime('%A') if "to" not in i.date_range else ''} {timeago.format(parse(i.date_range.split("to")[0]), now) if "to"  in i.date_range else timeago.format(parse(i.date_range), now)} {i.date_range } {i.time_range}
+    console.print(f""" [bold]{i.name}[/bold],  {i.openings} avail,  open: {f}  ages: {i.ages}
+            {i.days_of_week}, {timeago.format(parse(i.date_range.split("to")[0]), now) if "to"  in i.date_range else timeago.format(parse(i.date_range), now)}, {i.date_range }, {i.time_range}
             {i.location["label"]}
           {i.detail_url}
         

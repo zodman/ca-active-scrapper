@@ -56,7 +56,7 @@ for location in [kitchener, waterloo]:
                     {
                         "order_by": "Date range",
                         "page_number": page,
-                        "total_records_per_page": 20,
+                        "total_records_per_page": 90,
                     }
                 ),
             },
@@ -74,6 +74,7 @@ for location in [kitchener, waterloo]:
             except ValueError:
                 avail = False
 
+            results.append(i)
             if avail == 0:
                 continue
 
@@ -82,11 +83,11 @@ for location in [kitchener, waterloo]:
                 total_open = i["total_open"]
 
                 loc = py_.get(i, "location.label")
-                print(
-                    f"{location}:  {i['name']} {i['id']} available {openings}/{total_open} "
-                    f"dates: {i['date_range']} - {i['days_of_week']} time: {i['time_range']} ages:{i['ages']} location: {loc}"
-                )
-                results.append(i)
+                # print(
+                #     f"{location}:  {i['name']} {i['id']} available {openings}/{total_open} "
+                #     f"dates: {i['date_range']} - {i['days_of_week']} time: {i['time_range']} ages:{i['ages']} location: {loc}"
+                # )
+                # results.append(i)
 
 with open("output.json", "w") as f:
     json.dump(results, f)
