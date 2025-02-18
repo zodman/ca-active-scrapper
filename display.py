@@ -47,7 +47,6 @@ def send_telegram_message(message):
     url = f"https://api.telegram.org/bot{token}/sendMessage"
     params = {"chat_id": chat_id, "text": message}
     response = requests.post(url, params=params)
-    print(f"message sent {response.text}")
     response.raise_for_status()
 
 
@@ -68,20 +67,21 @@ for i in filtered:
                 print(f"sending message to telegram {id}")
                 db[id] = "send"
                 sent_message = True
-    msg = f""" [bold]{i.name}[/bold],  {i.openings} avail,  open: {f}  ages: {i.ages}
-            {i.days_of_week}, {timeago.format(parse(i.date_range.split("to")[0]), now) if "to"  in i.date_range else timeago.format(parse(i.date_range), now)}, {i.date_range }, {i.time_range}
-            {i.location["label"]}
-          {i.detail_url}
-        
-    """
-    console.print(msg)
     if sent_message:
         send_telegram_message(
             f"""
-{i.name},  {i.openings} avail, ages: {i.ages}
+               {i.name},  {i.openings} avail, ages: {i.ages}
             {i.days_of_week}, {timeago.format(parse(i.date_range.split("to")[0]), now) if "to"  in i.date_range else timeago.format(parse(i.date_range), now)}, {i.date_range }, {i.time_range}
             {i.location["label"]}
           {i.detail_url}
 
                 """
         )
+
+    msg = f"""  {':email:' if sent_message else '' }  [bold]{i.name}[/bold],  {i.openings} avail,  open: {f}  ages: {i.ages}
+            {i.days_of_week}, {timeago.format(parse(i.date_range.split("to")[0]), now) if "to"  in i.date_range else timeago.format(parse(i.date_range), now)}, {i.date_range }, {i.time_range}
+            {i.location["label"]}
+          {i.detail_url}
+        
+    """
+    console.print(msg)

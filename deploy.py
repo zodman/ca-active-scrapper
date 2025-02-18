@@ -16,13 +16,13 @@ rsync(c, ".", APP_DIR, exclude=[".venv", ".git", "*.db", "output.json"])
 c.run(f"mkdir -p {APP_DIR}")
 with c.cd(APP_DIR):
     c.run(f"{mise} install && {mise} exec -- python -m venv .venv", echo=True)
-    c.run(f"{mise} exec -- pip install -r requirements.txt ")
+    # c.run(f"{mise} exec -- pip install -r requirements.txt ")
     cmd = f"eval $({mise} env) && {APP_DIR}/.venv/bin/python  {APP_DIR}/main.py pickleball && "
     cmd += (
         f"{APP_DIR}/.venv/bin/python {APP_DIR}/display.py 2>&1 | logger -t pickleball"
     )
     c.run(cmd, echo_stdin=True)
     c.run("crontab -l > cron.tmp")
-    c.run(f"echo '30 8-23 * * * {cmd}' > cron.tmp ")
+    c.run(f"echo '15 8-23 * * * {cmd}' > cron.tmp ")
     c.run("sort -u cron.tmp > cron")
     c.run("crontab cron && rm -f cron*")
