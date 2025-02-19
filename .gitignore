@@ -173,5 +173,10 @@ poetry.toml
 pyrightconfig.json
 
 # End of https://www.toptal.com/developers/gitignore/api/python
-*.json
+output.json
 .*.db
+node_modules
+.parcel-cache
+dist
+.env.json
+.*.sw?
