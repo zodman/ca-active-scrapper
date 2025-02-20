@@ -6,6 +6,7 @@ from dateutil.parser import parse
 import datetime
 import dbm
 import os
+from textwrap import dedent
 
 from rich.console import Console
 
@@ -41,6 +42,11 @@ filtered = sorted(
 def send_telegram_message(message):
     token = os.getenv("TELEGRAM_TOKEN")
     chat_id = os.getenv("TELEGRAM_CHAT_ID")
+
+    if os.getenv("NO_TELEGRAM"):
+        print("telegram disabled")
+        return
+
     if not token or not chat_id:
         print("no message to telegram")
         return
@@ -64,18 +70,17 @@ for i in filtered:
         with dbm.open(os.path.join(BASE_DIR, ".mydb"), "c") as db:
             id = f"{i.id}"
             if id not in db:
-                print(f"sending message to telegram {id}")
                 db[id] = "send"
                 sent_message = True
     if sent_message:
         send_telegram_message(
-            f"""
-               {i.name},  {i.openings} avail, ages: {i.ages}
-            {i.days_of_week}, {timeago.format(parse(i.date_range.split("to")[0]), now) if "to"  in i.date_range else timeago.format(parse(i.date_range), now)}, {i.date_range }, {i.time_range}
-            {i.location["label"]}
-          {i.detail_url}
-
-                """
+            dedent(f"""\
+               {i.name}
+               {i.openings} avail, ages: {i.ages}
+               {i.days_of_week}, {timeago.format(parse(i.date_range.split("to")[0]), now) if "to"  in i.date_range else timeago.format(parse(i.date_range), now)}, {i.date_range }, {i.time_range}
+               {i.location["label"]}
+               {i.detail_url}
+                """)
         )
 
     msg = f"""  {':email:' if sent_message else '' }  [bold]{i.name}[/bold],  {i.openings} avail,  open: {f}  ages: {i.ages}

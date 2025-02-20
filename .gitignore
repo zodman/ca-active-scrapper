@@ -180,3 +180,4 @@ node_modules
 dist
 .env.json
 .*.sw?
+parcel-trace*

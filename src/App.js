@@ -41,6 +41,7 @@ const items = data
       group: group ? group.id : 1,
       title: entry.name,
       bgColor,
+      time_range,
 
       meta: {
         ...entry,
@@ -55,17 +56,39 @@ const items = data
       };
     }
 
-    const entries = getDateRange(entry.date_range_start, entry.date_range_end);
+    const entriesDate = getDateRange(
+      entry.date_range_start,
+      entry.date_range_end,
+    );
 
-    return entries.map((e, idx) => ({
+    const all = entriesDate.map((e, idx) => ({
       ...partData,
       id: partData.id + idx,
-      start_time: moment(`${e} ${partData.meta.time_range[0]}`),
-      end_time: moment(`${e} ${partData.meta.time_range[1]}`),
+      start_time: moment(`${e} ${partData.time_range[0]}`),
+      __start_time: `${e} ${partData.time_range[0]}`,
+      end_time: moment(`${e} ${partData.time_range[1]}`),
+      __end_time: `${e} ${partData.time_range[1]}`,
+      a: 1,
     }));
+
+    return all;
   })
   .flat()
   .filter(Boolean);
+
+function Item({ item }) {
+  if (!item) return null;
+
+  return (
+    <div>
+      <a href={item.meta.detail_url} target="_blank">
+        <h2>{item.title}</h2>
+      </a>
+      <p dangerouslySetInnerHTML={{ __html: item.meta.desc }}></p>
+      <pre>{item && JSON.stringify(item, null, 4)}</pre>
+    </div>
+  );
+}
 
 export function App() {
   const [item, setItem] = useState();
@@ -89,12 +112,8 @@ export function App() {
         onItemSelect={onItemSelected}
       ></Timeline>
       <div>
-        <a href={item && item.meta.detail_url} target="_blank">
-          <h2>{item && item.title}</h2>
-        </a>
-        {item && <p dangerouslySetInnerHTML={{ __html: item.meta.desc }}></p>}
+        <Item item={item} />
       </div>
-      <pre>{item && JSON.stringify(item, null, 4)}</pre>
     </div>
   );
 }
