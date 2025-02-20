@@ -77,7 +77,8 @@ for i in filtered:
             dedent(f"""\
                {i.name}
                {i.openings} avail, ages: {i.ages}
-               {i.days_of_week}, {timeago.format(parse(i.date_range.split("to")[0]), now) if "to"  in i.date_range else timeago.format(parse(i.date_range), now)}, {i.date_range }, {i.time_range}
+               {i.days_of_week}, {timeago.format(parse(i.date_range.split("to")[0]), now) if "to"  in i.date_range else timeago.format(parse(i.date_range), now)}
+               {i.date_range }, {i.time_range}
                {i.location["label"]}
                {i.detail_url}
                 """)
