@@ -28,7 +28,7 @@ const getDateRange = (firstDate, lastDate) => {
 export const items = data
   .map((entry, idx) => {
     const group = groups.find((e) => e.title === entry.location.label);
-    time_range = entry.time_range.split(" - ");
+    let time_range = entry.time_range.split(" - ");
 
     let bgColor = entry.activity_online_start_time === "" ? "blue" : "green";
 
