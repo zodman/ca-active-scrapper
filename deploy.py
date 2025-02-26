@@ -20,6 +20,8 @@ rsync(
         ".git",
         "*.db",
         "output.json",
+        "src/node_modules",
+        "src/.parcel_cache",
     ],
 )
 
@@ -33,3 +35,7 @@ with c.cd(APP_DIR):
     )
     c.run("sort -u cron.tmp > cron")
     c.run("crontab cron && rm -f cron*")
+
+    with c.cd(os.path.join(APP_DIR, "src")):
+        c.run("rm -rf .parcel_cache node_modules")
+        c.run(f"{mise} exec -- npm i ")
