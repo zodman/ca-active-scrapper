@@ -30,10 +30,17 @@ export const items = data
     const group = groups.find((e) => e.title === entry.location.label);
     let time_range = entry.time_range.split(" - ");
 
-    let bgColor = entry.activity_online_start_time === "" ? "blue" : "green";
+    let bgColor =
+      entry.activity_online_start_time === "" ? "is-available" : "is-pending";
+
+    let isAfter = moment(entry.activity_online_start_time).isAfter(moment());
+
+    if (entry.activity_online_start_time !== "" && isAfter) {
+      bgColor = "is-available";
+    }
 
     if (Number(entry.openings) === 0) {
-      bgColor = "gray";
+      bgColor = "is-full";
     }
 
     const partData = {
@@ -45,9 +52,7 @@ export const items = data
         ...entry,
       },
       itemProps: {
-        style: {
-          backgroundColor: bgColor,
-        },
+        className: bgColor,
       },
     };
 
@@ -68,9 +73,7 @@ export const items = data
       ...partData,
       id: `${partData.id}${idx}`,
       start_time: moment(`${e} ${partData.time_range[0]}`),
-      __start_time: `${e} ${partData.time_range[0]}`,
       end_time: moment(`${e} ${partData.time_range[1]}`),
-      __end_time: `${e} ${partData.time_range[1]}`,
     }));
 
     return all;

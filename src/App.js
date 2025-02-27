@@ -1,5 +1,4 @@
 import Timeline from "react-calendar-timeline";
-import "react-calendar-timeline/dist/style.css";
 import moment from "moment";
 import { useState } from "react";
 import { Item } from "./Item";
@@ -18,7 +17,12 @@ export function App() {
   return (
     <div className="container">
       <header>
-        <h1>Pickleball KW</h1>
+        <div className="grid">
+          <h1>Pickleball KW</h1>
+          <small>
+            {process.env.BUILD_TIME ? process.env.BUILD_TIME : "develop"}
+          </small>
+        </div>
       </header>
       <section>
         <Timeline

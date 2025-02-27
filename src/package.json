@@ -1,6 +1,8 @@
 {
+  "source": "index.html",
   "scripts": {
-    "start": "npx parcel index.html"
+    "start": "parcel",
+    "build": "BUILD_TIME=$(date) parcel build"
   },
   "dependencies": {
     "moment": "^2.30.1",
