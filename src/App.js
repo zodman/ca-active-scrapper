@@ -19,9 +19,17 @@ export function App() {
       <header>
         <div className="grid">
           <h1>Pickleball KW</h1>
-          <small>
-            {process.env.BUILD_TIME ? process.env.BUILD_TIME : "develop"}
-          </small>
+          <section className="grid">
+            <small>
+              <span class="is-pending">Green:</span> pending to open{" "}
+            </small>
+            <small>
+              <span class="is-available">Blue:</span> ready to enroll
+            </small>
+            <small>
+              <span class="is-full">Full:</span> is full
+            </small>
+          </section>
         </div>
       </header>
       <section>
@@ -40,6 +48,11 @@ export function App() {
       <section>
         <Item item={item} />
       </section>
+      <small>
+        generated at{" "}
+        {process.env.BUILD_TIME ? process.env.BUILD_TIME : "develop"}
+        code by <a href="https://t.me/zodman">@zodman</a>
+      </small>
     </div>
   );
 }

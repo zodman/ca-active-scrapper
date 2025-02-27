@@ -15,10 +15,6 @@ volleyball:
 
 alias d:=deploy
 deploy:
-  #!/bin/bash
-  set -ae 
-  INVOKE_RUN_ECHO=true
-  FABRIC_RUN_ECHO=true
   python deploy.py
 update_req:
   pip install -r requirements.in
