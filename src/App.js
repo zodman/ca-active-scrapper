@@ -43,6 +43,14 @@ export function App() {
           onItemSelect={onItemSelected}
           minZoom={1000 * 60 * 60 * 24}
           selected={false}
+          sidebarWidth={200}
+          timeSteps={{
+            minute: 1,
+            hour: 1,
+            day: 1,
+            month: 1,
+            year: 1,
+          }}
         ></Timeline>
       </section>
       <section>

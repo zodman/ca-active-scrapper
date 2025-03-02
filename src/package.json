@@ -1,7 +1,7 @@
 {
   "source": "index.html",
   "scripts": {
-    "start": "parcel",
+    "start": "rm -rf dist .parcel-cache && parcel",
     "build": "BUILD_TIME=$(date) parcel build"
   },
   "dependencies": {

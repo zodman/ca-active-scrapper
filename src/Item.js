@@ -76,7 +76,7 @@ export function Item({ item }) {
         <section dangerouslySetInnerHTML={{ __html: item.meta.desc }}></section>
         <div>Ages: {item.meta.ages}</div>
       </article>
-      {/* <pre>{item && JSON.stringify(item, null, 4)}</pre> */}
+      <pre>{item && JSON.stringify(item, null, 4)}</pre>
     </div>
   );
 }

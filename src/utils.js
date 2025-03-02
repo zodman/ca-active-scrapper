@@ -8,7 +8,8 @@ export const groups = [...new Set(groupData)].map((entry, idx) => ({
   id: idx,
 }));
 
-const getDateRange = (firstDate, lastDate) => {
+const getDateRange = (firstDate, lastDate, day) => {
+  days_of_week = ["mon", "tue", "wed", "thur", "fri", "sat", "sun"];
   if (
     moment(firstDate, "YYYY-MM-DD").isSame(
       moment(lastDate, "YYYY-MM-DD"),
@@ -19,7 +20,12 @@ const getDateRange = (firstDate, lastDate) => {
   let date = firstDate;
   const dates = [date];
   do {
-    date = moment(date).add(1, "day");
+    if (day === undefined) {
+      date = moment(date).add(1, "days");
+    } else {
+      date = moment(date).add(1, "weeks").day(day);
+    }
+
     dates.push(date.format("YYYY-MM-DD"));
   } while (moment(date).isBefore(lastDate));
   return dates;
@@ -30,13 +36,16 @@ export const items = data
     const group = groups.find((e) => e.title === entry.location.label);
     let time_range = entry.time_range.split(" - ");
 
-    let bgColor =
-      entry.activity_online_start_time === "" ? "is-available" : "is-pending";
+    let bgColor = "is-available";
 
-    let isAfter = moment(entry.activity_online_start_time).isAfter(moment());
+    if (entry.activity_online_start_time !== "") {
+      let isAfter = moment().isAfter(moment(entry.activity_online_start_time));
 
-    if (entry.activity_online_start_time !== "" && isAfter) {
-      bgColor = "is-available";
+      if (isAfter) {
+        bgColor = "is-available";
+      } else {
+        bgColor = "is-pending";
+      }
     }
 
     if (Number(entry.openings) === 0) {
@@ -45,7 +54,7 @@ export const items = data
 
     const partData = {
       id: `${entry.id}${idx}`,
-      group: group ? group.id : 1,
+      group: group.id,
       title: entry.name,
       time_range,
       meta: {
@@ -56,7 +65,7 @@ export const items = data
       },
     };
 
-    if (entry.date_range_end === "") {
+    if (entry.only_one_day) {
       return {
         ...partData,
         start_time: moment(`${entry.date_range_start} ${time_range[0]}`),
@@ -67,6 +76,7 @@ export const items = data
     const entriesDate = getDateRange(
       entry.date_range_start,
       entry.date_range_end,
+      entry.days_of_week,
     );
 
     const all = entriesDate.map((e, idx) => ({
