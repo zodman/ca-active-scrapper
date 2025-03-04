@@ -2,7 +2,7 @@
   "source": "index.html",
   "scripts": {
     "start": "rm -rf dist .parcel-cache && parcel",
-    "build": "BUILD_TIME=$(date) parcel build"
+    "build": "BUILD_TIME=$(date) rm -rf dist .parcel-cache &&  parcel build"
   },
   "dependencies": {
     "moment": "^2.30.1",

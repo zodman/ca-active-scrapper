@@ -1,15 +1,36 @@
 import * as data from "../all_output.json";
 import moment from "moment";
 
-const groupData = data.map((entry) => entry.location.label);
+const order = [
+  "Breithaupt Centre",
+  "Downtown Cmty Centre",
+  "St Johns School",
+  "Waterloo Memorial Rec Cplx",
+  "WMRC",
+  "Queensmount Arena",
+  "Forest Heights Cmty Centre",
+  "Kingsdale Cmty Centre",
+  "RIM Park",
+  "Country Hills Community Centre",
+  "Doon Pioneer Park Cmty Centre",
+  "Huron Cmty Centre",
+];
 
-export const groups = [...new Set(groupData)].map((entry, idx) => ({
+const groupData = data.map((entry) => entry.location.label);
+const uniqueList = [...new Set(groupData)];
+uniqueList.forEach((e) => {
+  if (!order.includes(e)) {
+    order.push(e);
+  }
+});
+
+export const groups = order.map((entry, idx) => ({
   title: entry,
   id: idx,
 }));
+console.log(groups);
 
 const getDateRange = (firstDate, lastDate, day) => {
-  days_of_week = ["mon", "tue", "wed", "thur", "fri", "sat", "sun"];
   if (
     moment(firstDate, "YYYY-MM-DD").isSame(
       moment(lastDate, "YYYY-MM-DD"),

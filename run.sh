@@ -9,8 +9,7 @@ BUILD_TIME=$(date)
 PATH="$HOME/.local/bin/:$APP_DIR/.venv/bin/:$PATH"
 eval $(mise env -C $APP_DIR)
 "$APP_DIR"/.venv/bin/python "$APP_DIR"/main.py pickleball
-"$APP_DIR"/.venv/bin/python "$APP_DIR"/display.py
-
 "$APP_DIR"/.venv/bin/python "$APP_DIR"/all.py pickleball
+"$APP_DIR"/.venv/bin/python "$APP_DIR"/display.py
 
 cd $APP_DIR/src && npm run build
