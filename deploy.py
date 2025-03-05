@@ -8,6 +8,7 @@ c = Connection(
 )
 c.config.run.echo = True
 c.config.run.debug = True
+c.config.sudo.password = os.getenv("SUDO_PASSWORD")
 
 
 BASE_DIR = os.path.basename(os.path.dirname(os.path.realpath(__file__)))
@@ -25,6 +26,7 @@ rsync(
         ".git",
         "*.db",
         "output.json",
+        "env.json",
         "all_output.json",
         "src/node_modules",
         "src/.parcel-cache",
@@ -37,10 +39,8 @@ c.run(f"mkdir -p {APP_DIR}")
 with c.cd(APP_DIR):
     c.run(f"{mise} install && {mise} exec -- python -m venv .venv")
     c.run("./.venv/bin/pip install -r requirements.txt")
-    c.run("crontab -l > cron.tmp")
-    c.run(
-        f"echo '*/5 8-23 * * * {APP_DIR}/run.sh 2>&1 | logger -t pickleball  ' > cron.tmp "
+    c.sudo(
+        f"echo '* 8-23 * * * zodman {APP_DIR}/run.sh 2>&1 | logger -t pickleball  ' >  /etc/cron.d/pickleball "
     )
-    c.run("sort -u cron.tmp > cron")
     c.run("bash run.sh")
     c.run("crontab cron && rm -f cron*")

@@ -28,7 +28,6 @@ export const groups = order.map((entry, idx) => ({
   title: entry,
   id: idx,
 }));
-console.log(groups);
 
 const getDateRange = (firstDate, lastDate, day) => {
   if (

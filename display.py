@@ -15,7 +15,7 @@ console = Console()
 BASE_DIR = os.path.dirname(os.path.realpath(__file__))
 
 
-with open(os.path.join(BASE_DIR, "output.json")) as f:
+with open(os.path.join(BASE_DIR, "all_output.json")) as f:
     results = json.loads(f.read())
 
 filtered = []
@@ -90,4 +90,4 @@ for i in filtered:
           {i.detail_url}
         
     """
-    console.print(msg)
+    # console.print(msg)
