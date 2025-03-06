@@ -1,5 +1,6 @@
 import Timeline from "react-calendar-timeline";
 import moment from "moment";
+moment.suppressDeprecationWarnings = true;
 import { useState } from "react";
 import { Item } from "./Item";
 import { groups, items } from "./utils";
@@ -21,13 +22,13 @@ export function App() {
           <h1>Pickleball KW</h1>
           <section className="grid">
             <small>
-              <span class="is-pending">Green:</span> pending to open{" "}
+              <span className="is-pending">Green:</span> pending to open{" "}
             </small>
             <small>
-              <span class="is-available">Blue:</span> ready to enroll
+              <span className="is-available">Blue:</span> ready to enroll
             </small>
             <small>
-              <span class="is-full">Full:</span> is full
+              <span className="is-full">Full:</span> is full
             </small>
           </section>
         </div>

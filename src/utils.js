@@ -1,5 +1,6 @@
 import * as data from "../all_output.json";
 import moment from "moment";
+moment.suppressDeprecationWarnings = true;
 
 const order = [
   "Breithaupt Centre",
@@ -110,3 +111,25 @@ export const items = data
   })
   .flat()
   .filter(Boolean);
+
+export const genCalendarLink = ({
+  title,
+  details,
+  location,
+  dateStr,
+  zt = "America%2FToronto",
+}) => {
+  //"20250306T031300Z/20250306T031300Z",
+  const format = (d) => {
+    return d.utc().format();
+  };
+  let from = moment(dateStr);
+  let to = moment(from).add(5, "minutes");
+  let dates = `${format(from)}/${format(to)}`;
+  dates = dates.split("-").join("");
+  dates = dates.split(":").join("");
+  title = `[REMINDER ENROLL] ${title}`.split(" ").join("%20");
+  location = location.split(" ").join("%20");
+
+  return `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${title}&details=${details}&location=${location}&dates=${dates}&ctz=${zt}`;
+};

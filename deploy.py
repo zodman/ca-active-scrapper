@@ -26,7 +26,7 @@ rsync(
         ".git",
         "*.db",
         "output.json",
-        "env.json",
+        ".env.json",
         "all_output.json",
         "src/node_modules",
         "src/.parcel-cache",
@@ -36,11 +36,10 @@ rsync(
 )
 
 c.run(f"mkdir -p {APP_DIR}")
+cmd = f"echo '* 8-23 * * * zodman {APP_DIR}/run.sh 2>&1 | logger -t pickleball  '  > /etc/cron.d/pickleball"
+c.sudo(f""" bash -c "{cmd}" """)
+
 with c.cd(APP_DIR):
     c.run(f"{mise} install && {mise} exec -- python -m venv .venv")
     c.run("./.venv/bin/pip install -r requirements.txt")
-    c.sudo(
-        f"echo '* 8-23 * * * zodman {APP_DIR}/run.sh 2>&1 | logger -t pickleball  ' >  /etc/cron.d/pickleball "
-    )
     c.run("bash run.sh")
-    c.run("crontab cron && rm -f cron*")
