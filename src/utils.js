@@ -133,3 +133,9 @@ export const genCalendarLink = ({
 
   return `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${title}&details=${details}&location=${location}&dates=${dates}&ctz=${zt}`;
 };
+
+export const genMapsLink = (item) => {
+  return `https://maps.google.com/?q=${item.meta.location.label},${item.meta.active_location.includes("kitchener") ? "Kitchener" : "waterloo"},Ontario,canada`
+    .split(" ")
+    .join("%20");
+};

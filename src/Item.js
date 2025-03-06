@@ -1,7 +1,7 @@
 import moment from "moment";
 moment.suppressDeprecationWarnings = true;
 import { Intro } from "./Intro";
-import { genCalendarLink } from "./utils";
+import { genCalendarLink, genMapsLink } from "./utils";
 
 export function Item({ item }) {
   if (!item) return <Intro />;
@@ -28,11 +28,12 @@ export function Item({ item }) {
     );
   }
 
+  const mapsLink = genMapsLink(item);
   const calendarLink = genCalendarLink({
     title: item.meta.name,
-    details: "",
+    details: `${item.meta.location.label} \n${mapsLink} \n ${item.meta.detail_url}`,
     dateStr: item.meta.activity_online_start_time,
-    location: item.meta.location.label,
+    location: item.meta.detail_url,
   });
 
   return (
@@ -50,10 +51,7 @@ export function Item({ item }) {
         </div>
         <div className="grid">
           <h3>
-            <a
-              href={`https://maps.google.com/?q=${item.meta.location.label},${item.meta.active_location.includes("kitchener") ? "Kitchener" : "waterloo"}, Ontario,canada`}
-              target="_blank"
-            >
+            <a href={mapsLink} target="_blank">
               🏟️ {item.meta.active_location.split("active")[1][0].toUpperCase()}{" "}
               - {item.meta.location.label}
             </a>
